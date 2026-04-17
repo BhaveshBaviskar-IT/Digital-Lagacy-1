@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+
+<body style="background:#0F172A; color:white; text-align:center; font-family:sans-serif;">
+
+<h1 style="color:#7C3AED;">🔐 Digital Legacy Locker</h1>
+
+<h2>Login</h2>
+
+<input id="username" placeholder="Username" style="padding:10px;"><br><br>
+<input id="password" type="password" placeholder="Password" style="padding:10px;"><br><br>
+
+<button onclick="login()" style="padding:10px; background:#7C3AED; color:white;">Login</button>
+
+<script>
+function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  if(user && pass){
+    window.location.href = "index.html";
+  } else {
+    alert("Enter details");
+  }
+}
+</script>
+
+</body>
+</html>

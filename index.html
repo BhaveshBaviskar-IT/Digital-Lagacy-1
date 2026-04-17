@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Digital Legacy Locker</title>
+
+<style>
+body {
+  background:#0F172A;
+  color:white;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+.card {
+  background:#1E293B;
+  padding:20px;
+  border-radius:12px;
+  width:250px;
+}
+
+button {
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:hover {
+  opacity:0.8;
+  transform:scale(1.05);
+  transition:0.3s;
+}
+
+.save { background:#7C3AED; color:white; }
+.add { background:#22C55E; color:white; }
+.trigger { background:red; color:white; }
+
+input {
+  padding:10px;
+  width:90%;
+  margin-bottom:10px;
+  border-radius:6px;
+  border:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 style="color:#7C3AED;">🔐 Digital Legacy Locker</h1>
+
+<div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:30px;">
+
+<!-- Store Secret -->
+<div class="card">
+<h3>🔐 Store Secret</h3>
+<input id="message" placeholder="Secret">
+<input id="lastMessage" placeholder="Final Message ❤️">
+<button class="save" onclick="saveData()">Save</button>
+
+<input id="instaUser" placeholder="Instagram Username">
+<input id="instaPass" type="password" placeholder="Instagram Password">
+</div>
+<h4>🔑 Social Credentials</h4>
+
+<input id="instaUser" placeholder="Instagram Username">
+<input id="instaPass" type="password" placeholder="Instagram Password">
+
+<button class="save" onclick="saveCredentials()">Save Credentials</button>
+
+<!-- Nominee -->
+<div class="card">
+<h3>👨‍👩‍👧 Nominee</h3>
+<input id="email" placeholder="Email">
+<button class="add" onclick="addNominee()">Add</button>
+</div>
+
+<!-- Trigger -->
+<div class="card">
+<h3>⚡ Trigger</h3>
+<button class="trigger" onclick="goToAccess()">Activate</button>
+</div>
+
+</div>
+
+<script>
+function goToAccess(){
+  window.location.href = "otp.html";
+}
+
+async function saveData() {
+  const message = document.getElementById("message").value;
+  const lastMessage = document.getElementById("lastMessage").value;
+
+  await fetch("http://localhost:5000/save", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ message, lastMessage })
+  });
+
+  alert("Saved securely 🔐");
+}
+
+async function addNominee() {
+  const email = document.getElementById("email").value;
+
+  await fetch("http://localhost:5000/nominee", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ email })
+  });
+
+  alert("Nominee added 👨‍👩‍👧");
+}
+
+async function saveCredentials() {
+  const username = document.getElementById("instaUser").value;
+  const password = document.getElementById("instaPass").value;
+
+  await fetch("http://localhost:5000/saveCredentials", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ username, password })
+  });
+
+  alert("Credentials saved 🔐");
+}
+</script>
+
+</body>
+</html>

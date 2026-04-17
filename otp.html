@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Verification</title>
+
+<style>
+body {
+  background:black;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+.box {
+  background:#0F172A;
+  padding:30px;
+  border-radius:12px;
+}
+
+input {
+  padding:10px;
+  margin-top:10px;
+}
+
+button {
+  padding:10px;
+  background:#7C3AED;
+  color:white;
+  border:none;
+  margin-top:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+<h2>🔐 Verify Identity</h2>
+
+<p>Enter OTP sent to nominee</p>
+
+<input id="otp" placeholder="Enter OTP">
+
+<br>
+
+<button onclick="verify()">Verify</button>
+</div>
+
+<script>
+function verify(){
+  const otp = document.getElementById("otp").value;
+
+  if(otp === "1234"){
+    window.location.href = "access.html";
+  } else {
+    alert("Wrong OTP");
+  }
+}
+</script>
+
+</body>
+</html>

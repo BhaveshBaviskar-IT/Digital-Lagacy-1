@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Access Granted</title>
+
+<style>
+body {
+  background:#020617;
+  color:white;
+  font-family:sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+}
+
+/* Card */
+.card {
+  background:#0F172A;
+  padding:30px;
+  border-radius:15px;
+  width:350px;
+  box-shadow:0 0 25px rgba(124,58,237,0.5);
+}
+
+/* Title animation */
+h1 {
+  color:#22C55E;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow:0 0 10px #22C55E; }
+  to { text-shadow:0 0 20px #22C55E; }
+}
+
+/* Text styling */
+.data {
+  margin-top:20px;
+  background:#1E293B;
+  padding:15px;
+  border-radius:10px;
+}
+
+/* Fade animation */
+.fade {
+  animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card fade">
+
+<h1>✅ Access Granted</h1>
+
+<p style="color:gray;">Secure data unlocked for nominee</p>
+
+<div class="data" id="output">
+Loading secure data...
+</div>
+
+</div>
+
+<script>
+async function loadData() {
+  const res = await fetch("http://localhost:5000/trigger");
+  const data = await res.json();
+
+  document.getElementById("output").innerText =
+    "👨‍👩‍👧 Nominee: " + data.nominee +
+    "\n\n🔐 Secret: " + data.message +
+    "\n\n❤️ Final Message:\n" + data.finalMessage;
+
+  document.getElementById("sound").play();
+  "\n\n🔑 Instagram Username: " + data.credentials.username +
+"\n🔒 Password: ******"
+}
+
+<button onclick="reveal()">👁 Reveal Password</button>
+// auto load after delay
+setTimeout(loadData, 1000);
+</script>
+
+</body>
+</html>

@@ -19,7 +19,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Save credentials to Firestore
+function encodePassword(password) {
+  return btoa(password);
+}
+
+function decodePassword(encodedPassword) {
+  try {
+    return atob(encodedPassword);
+  } catch (error) {
+    return encodedPassword || "";
+  }
+}
+
 async function saveCredentials() {
   const platform = document.getElementById("platformInput")?.value.trim();
   const username = document.getElementById("usernameInput")?.value.trim();
@@ -34,7 +45,7 @@ async function saveCredentials() {
     await addDoc(collection(db, "credentials"), {
       platform,
       username,
-      password,
+      password: encodePassword(password),
       createdAt: serverTimestamp()
     });
 
@@ -51,7 +62,6 @@ async function saveCredentials() {
   }
 }
 
-// Load credentials from Firestore
 async function loadCredentials() {
   const list = document.getElementById("credentialsList");
   if (!list) return;
@@ -78,7 +88,7 @@ async function loadCredentials() {
       card.innerHTML = `
         <p><strong>Platform:</strong> ${data.platform || ""}</p>
         <p><strong>Username:</strong> ${data.username || ""}</p>
-        <p><strong>Password:</strong> ${data.password || ""}</p>
+        <p><strong>Password:</strong> ${decodePassword(data.password)}</p>
       `;
 
       list.appendChild(card);
@@ -89,8 +99,6 @@ async function loadCredentials() {
   }
 }
 
-// Attach event listener to save button
 document.getElementById("saveCredentialsBtn")?.addEventListener("click", saveCredentials);
 
-// Load saved credentials when page opens
 loadCredentials();

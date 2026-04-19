@@ -55,19 +55,17 @@ input {
 <!-- Store Secret -->
 <div class="card">
 <h3>🔐 Store Secret</h3>
-<input id="message" placeholder="Secret">
-<input id="lastMessage" placeholder="Final Message ❤️">
-<button class="save" onclick="saveData()">Save</button>
-
 <input id="instaUser" placeholder="Instagram Username">
 <input id="instaPass" type="password" placeholder="Instagram Password">
 </div>
+
+<div class="card">
 <h4>🔑 Social Credentials</h4>
-
-<input id="instaUser" placeholder="Instagram Username">
-<input id="instaPass" type="password" placeholder="Instagram Password">
-
+<input id="socialUser" placeholder="Instagram Username">
+<input id="socialPass" type="password" placeholder="Instagram Password">
 <button class="save" onclick="saveCredentials()">Save Credentials</button>
+<div id="credentialsList" style="display:none;"></div>
+</div>
 
 <!-- Nominee -->
 <div class="card">

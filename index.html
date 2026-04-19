@@ -82,48 +82,64 @@ input {
 
 </div>
 
-<script>
-function goToAccess(){
-  window.location.href = "otp.html";
-}
+<script type="module">
 
-async function saveData() {
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// 🔥 PASTE YOUR CONFIG HERE
+const firebaseConfig = {
+  apiKey: "AIzaSyB8xEa25No0fBTof7nXU2_oKCa6-scDkFk",
+  authDomain: "digital-legacy-1.firebaseapp.com",
+  projectId: "digital-legacy-1",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 👇 KEEP YOUR FUNCTIONS SAME BUT MODIFY INSIDE
+
+window.goToAccess = function() {
+  window.location.href = "otp.html";
+};
+
+window.saveData = async function() {
   const message = document.getElementById("message").value;
   const lastMessage = document.getElementById("lastMessage").value;
 
-  await fetch("http://localhost:5000/save", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ message, lastMessage })
+  await addDoc(collection(db, "messages"), {
+    message,
+    lastMessage,
+    createdAt: serverTimestamp()
   });
 
   alert("Saved securely 🔐");
-}
+};
 
-async function addNominee() {
+window.addNominee = async function() {
   const email = document.getElementById("email").value;
 
-  await fetch("http://localhost:5000/nominee", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ email })
+  await addDoc(collection(db, "nominees"), {
+    email,
+    createdAt: serverTimestamp()
   });
 
   alert("Nominee added 👨‍👩‍👧");
-}
+};
 
-async function saveCredentials() {
+window.saveCredentials = async function() {
   const username = document.getElementById("instaUser").value;
   const password = document.getElementById("instaPass").value;
 
-  await fetch("http://localhost:5000/saveCredentials", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ username, password })
+  await addDoc(collection(db, "credentials"), {
+    username,
+    password,
+    createdAt: serverTimestamp()
   });
 
   alert("Credentials saved 🔐");
-}
+};
+
 </script>
 
 </body>

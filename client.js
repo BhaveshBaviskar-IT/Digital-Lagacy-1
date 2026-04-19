@@ -3,7 +3,8 @@ import {
   getFirestore,
   collection,
   addDoc,
-  getDocs
+  getDocs,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -18,7 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Save data to Firestore
+// Save credentials to Firestore
 async function saveCredentials() {
   const platform = document.getElementById("platformInput")?.value.trim();
   const username = document.getElementById("usernameInput")?.value.trim();
@@ -34,7 +35,7 @@ async function saveCredentials() {
       platform,
       username,
       password,
-      createdAt: Date.now()
+      createdAt: serverTimestamp()
     });
 
     alert("Credentials saved to Firestore");
@@ -50,7 +51,7 @@ async function saveCredentials() {
   }
 }
 
-// Read data from Firestore and show it
+// Load credentials from Firestore
 async function loadCredentials() {
   const list = document.getElementById("credentialsList");
   if (!list) return;
@@ -60,22 +61,36 @@ async function loadCredentials() {
   try {
     const snapshot = await getDocs(collection(db, "credentials"));
 
+    if (snapshot.empty) {
+      list.innerHTML = "<p>No credentials saved yet.</p>";
+      return;
+    }
+
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
 
-      list.innerHTML += `
-        <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
-          <p><strong>Platform:</strong> ${data.platform}</p>
-          <p><strong>Username:</strong> ${data.username}</p>
-          <p><strong>Password:</strong> ${data.password}</p>
-        </div>
+      const card = document.createElement("div");
+      card.style.border = "1px solid #ccc";
+      card.style.padding = "10px";
+      card.style.margin = "10px 0";
+      card.style.borderRadius = "8px";
+
+      card.innerHTML = `
+        <p><strong>Platform:</strong> ${data.platform || ""}</p>
+        <p><strong>Username:</strong> ${data.username || ""}</p>
+        <p><strong>Password:</strong> ${data.password || ""}</p>
       `;
+
+      list.appendChild(card);
     });
   } catch (error) {
     console.error("Error loading credentials:", error);
+    list.innerHTML = "<p>Failed to load credentials.</p>";
   }
 }
 
+// Attach event listener to save button
 document.getElementById("saveCredentialsBtn")?.addEventListener("click", saveCredentials);
 
+// Load saved credentials when page opens
 loadCredentials();
